@@ -4,9 +4,6 @@
 # https://github.com/jeelabs/esp-link
 # Dennis Heitmann
 # ---
-#define SDonoff 0
-#define LCDonoff 0
-
 #include <ELClient.h>
 #include <ELClientCmd.h>
 #include <ELClientMqtt.h>
@@ -58,7 +55,6 @@ void mqttPublished(void* response) {
 }
 
 #define PIN 2
-
 #define MESSZEITRAUM 250 // alle 5 sec.
 
 volatile int impulse = -1;
@@ -76,7 +72,10 @@ void setup() {
   bool ok;
   do {
     ok = esp.Sync();      // sync up with esp-link, blocks for up to 2 seconds
-    if (!ok) Serial.println("EL-Client sync failed!");
+    if (!ok) {
+      Serial.println("EL-Client sync failed! Retrying...");
+      delay(1000); // Give some time before retrying
+    }
   } while (!ok);
   Serial.println("EL-Client synced!");
 
@@ -108,11 +107,13 @@ void loop()
     zeitVorher = 0;
     attachInterrupt(digitalPinToInterrupt(PIN), messung, FALLING);
   }
-  if (impulse > (MESSZEITRAUM + 10))
+  if (impulse > MESSZEITRAUM)
   {
+    detachInterrupt(digitalPinToInterrupt(PIN));
     impulse = -1;
     zeit = 0;
     zeitVorher = 0;
+    attachInterrupt(digitalPinToInterrupt(PIN), messung, FALLING);
   }
 }
 
