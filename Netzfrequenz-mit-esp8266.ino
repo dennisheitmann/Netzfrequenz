@@ -1,9 +1,9 @@
-# Netzfrequenzmessung mit Übertragung via Serial SLIP an einen ESP8266 mit esp-link
-# Arduino mit Netztransformator und +2,5 V Offset 
-# https://github.com/jeelabs/el-client
-# https://github.com/jeelabs/esp-link
-# Dennis Heitmann
-# ---
+// Netzfrequenzmessung mit Übertragung via Serial SLIP an einen ESP8266 mit esp-link
+// Arduino mit Netztransformator und +2,5 V Offset 
+// https://github.com/jeelabs/el-client
+// https://github.com/jeelabs/esp-link
+// Dennis Heitmann
+// ---
 #include <ELClient.h>
 #include <ELClientCmd.h>
 #include <ELClientMqtt.h>
